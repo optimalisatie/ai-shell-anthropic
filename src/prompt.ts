@@ -6,7 +6,7 @@ import {
   getRevision,
   getScriptAndInfo,
 } from './helpers/completion';
-import { getConfig } from './helpers/config';
+import { getConfig, readSystemPromptConfigFile } from './helpers/config';
 import { projectName } from './helpers/constants';
 import { KnownError } from './helpers/error';
 import clipboardy from 'clipboardy';
@@ -95,26 +95,42 @@ export async function prompt({
   usePrompt,
   silentMode,
   instantMode,
+  safeMode,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
     ANTHROPICAI_KEY: key,
     SILENT_MODE,
     INSTANT_MODE,
+    SAFE_MODE,
     MODEL: model,
+    SYSTEM_PROMPT_FILE,
   } = await getConfig();
   const skipCommandExplanation = silentMode || SILENT_MODE;
   const skipCommandConfirmation = instantMode || INSTANT_MODE;
+  const safeModeEnabled = safeMode || SAFE_MODE;
+
+  let systemPromptConfig;
+  if (SYSTEM_PROMPT_FILE) {
+    systemPromptConfig = await readSystemPromptConfigFile(SYSTEM_PROMPT_FILE);
+  }
 
   console.log('');
   p.intro(`${cyan(`${projectName}`)}`);
 
-  const thePrompt = usePrompt || (await getPrompt());
+  let thePrompt = usePrompt || (await getPrompt());
+
+  if (safeModeEnabled) {
+    thePrompt += '\n\nRemember, you are in safe mode and you will not respond with commands that can cause changes to files or the environment of the server.'
+  }
+
   const spin = p.spinner();
   spin.start(i18n.t(`Loading...`));
   const { readInfo, readScript } = await getScriptAndInfo({
     prompt: thePrompt,
     key,
     model,
+    safeModeEnabled,
+    systemPromptConfig,
   });
 
   if (!skipCommandConfirmation) {
@@ -128,7 +144,11 @@ export async function prompt({
   console.log('');
 
   if (skipCommandConfirmation) {
-    await runScript(script);
+    try {
+      await runScript(script);
+    } catch (err) { 
+      console.error('error executing script', err);
+    }
     process.exit(1);
   } else {
 

@@ -28,18 +28,24 @@ cli(
         description: 'Instantly execute generated commands',
         alias: 'i',
       },
+      safe: {
+        type: Boolean,
+        description: 'Enable safe mode to enable an Anthropic AI system prompt that instructs the agent to never generate commands that can potentially cause changes on the server.',
+        alias: 'S',
+      },
     },
     commands: [config, chat, update],
   },
   (argv) => {
     const silentMode = argv.flags.silent;
     const instantMode = argv.flags.instant;
+    const safeMode = argv.flags.safe;
     const promptText = argv._.join(' ');
 
     if (promptText.trim() === 'update') {
       update.callback?.(argv);
     } else {
-      prompt({ usePrompt: promptText, silentMode, instantMode }).catch((error) => {
+      prompt({ usePrompt: promptText, silentMode, instantMode, safeMode }).catch((error) => {
         console.error(`\n${red('✖')} ${error.message}`);
         handleCliError(error);
         process.exit(1);

@@ -150,7 +150,7 @@ ai config set INSTANT_MODE=true
 
 Remember, while AI assistants like Anthropic AI can be incredibly helpful, they are not infallible. It's always your responsibility to ensure the safety and reliability of the commands you execute on your system.
 
-### Custom Anthropic Model
+# Custom Anthropic Model
 
 Anthropic offers a range of powerful language models that can be used to generate shell scripts and commands. You can select the Anthropic model that best suits your needs, either via the short hands `opus`, `sonnet`, and `haiku`, or by using a specific model version reference, e.g., `claude-3-haiku-20240307`. The default model is `haiku`.
 
@@ -179,6 +179,47 @@ Here's a list of the advantages of each Anthropic model for the shell AI tool:
 - Generates succinct and to-the-point shell commands, perfect for users who prefer a streamlined and minimalist approach
 - Focuses on the essential aspects of the task at hand, without providing extensive explanations or context
 - Best suited for users who prioritize speed and simplicity in their shell AI assistant, and are comfortable with a more concise output style
+
+# Customizing System Prompts
+
+Anthropic AI offers a unique feature that allows users to customize the system prompts for the AI shell assistant. By modifying the system prompts, you can fine-tune the AI's behavior and responses to achieve a personalized and efficient shell agent tailored to your specific needs.
+
+The default system prompts are located in the repository directory [./src/system-prompts.ts](./src/system-prompts.ts). This file contains three system prompts:
+
+1. `shell`: The system prompt for generating shell commands.
+2. `shell_safe`: The system prompt for generating shell commands when safe mode is enabled.
+3. `chat`: The system prompt for general chat mode.
+
+By customizing these system prompts, you can unlock unique capabilities for the AI shell assistant. Here are some examples:
+
+- Customize the `shell` prompt to prioritize specific aspects like performance, readability, or compatibility. You can also add context about your environment, such as the operating system or preferred shell, to generate more targeted commands.
+
+- Modify the `shell_safe` prompt to enhance security by specifying additional checks, defining stricter rules for safe commands, and providing examples of harmful commands to avoid. This allows you to create a highly secure AI shell assistant that adheres to your organization's security guidelines.
+
+- Tailor the `chat` prompt to achieve advanced general-purpose AI agents accessible from the shell CLI. You can customize the AI's personality, tone, or communication style, specify areas of expertise, encourage clarifying questions, and define ethical guidelines for the conversation.
+
+Customizing the system prompts is a powerful way to leverage Anthropic AI's capabilities and create a highly personalized AI shell assistant. By modifying the prompts, you can adapt the AI's behavior to suit your specific requirements, whether it's generating optimized shell commands, enhancing security, or providing intelligent conversation.
+
+To customize the system prompts, follow these steps:
+
+1. Create a new JSON file with your custom system prompts.
+2. Set the path to your custom system prompts JSON file using one of the following methods:
+
+Access the configuration UI menu by running:
+
+```sh
+ai config
+```
+
+Navigate to the "System Prompt File" option and provide the path to your custom system prompts JSON file.
+
+Alternatively, you can set the option directly using the following command:
+
+```sh
+ai config set SYSTEM_PROMPT_FILE=/path/to/system-prompts.json
+```
+
+Once you have set the path to your custom system prompts file, the AI shell assistant will use the specified prompts for generating commands and responses.
 
 ### Set Language
 

@@ -49,8 +49,14 @@ const configParsers = {
   INSTANT_MODE(mode?: string) {
     return String(mode).toLowerCase() === 'true';
   },
+  SAFE_MODE(mode?: string) {
+    return String(mode).toLowerCase() === 'true';
+  },
   LANGUAGE(language?: string) {
     return language || 'en';
+  },
+  SYSTEM_PROMPT_FILE(system_prompt_file?: string) {
+    return system_prompt_file || false;
   },
 } as const;
 
@@ -80,6 +86,29 @@ const readConfigFile = async (): Promise<RawConfig> => {
 
   const configString = await fs.readFile(configPath, 'utf8');
   return ini.parse(configString);
+};
+
+export const readSystemPromptConfigFile = async (system_prompt_file): Promise<RawConfig> => {
+  const configExists = (system_prompt_file) ? await fileExists(system_prompt_file) : false;
+  if (!configExists) {
+    return Object.create(null);
+  }
+
+  let configString;
+  try {
+    if (/\.js$/.test(system_prompt_file)) {
+      configString = require(path.resolve(system_prompt_file));
+    } else {
+      configString = JSON.parse(await fs.readFile(system_prompt_file, 'utf8'));
+    }
+    if (!configString || typeof configString !== 'object') {
+      throw new KnownError(`${i18n.t('Invalid JSON in system prompt file.')}: ${system_prompt_file}`);  
+    }
+  } catch(err) {
+    throw new KnownError(`${i18n.t('Failed to parse JSON of system prompt file.')}: ${system_prompt_file} ${err}`);
+    return false;
+  }
+  return configString;
 };
 
 export const getConfig = async (
@@ -141,6 +170,13 @@ export const showConfigUI = async () => {
             : i18n.t('(not set)'),
         },
         {
+          label: i18n.t('Safe Mode'),
+          value: 'SAFE_MODE',
+          hint: hasOwn(config, 'SAFE_MODE')
+            ? config.SAFE_MODE.toString()
+            : i18n.t('(not set)'),
+        },
+        {
           label: i18n.t('Model'),
           value: 'MODEL',
           hint: hasOwn(config, 'MODEL') ? config.MODEL : i18n.t('(not set)'),
@@ -150,6 +186,13 @@ export const showConfigUI = async () => {
           value: 'LANGUAGE',
           hint: hasOwn(config, 'LANGUAGE')
             ? config.LANGUAGE
+            : i18n.t('(not set)'),
+        },
+        {
+          label: i18n.t('System Prompt File'),
+          value: 'SYSTEM_PROMPT_FILE',
+          hint: hasOwn(config, 'SYSTEM_PROMPT_FILE')
+            ? config.SYSTEM_PROMPT_FILE.toString()
             : i18n.t('(not set)'),
         },
         {
@@ -185,6 +228,26 @@ export const showConfigUI = async () => {
       });
       if (p.isCancel(instantMode)) return;
       await setConfigs([['INSTANT_MODE', instantMode ? 'true' : 'false']]);
+    } else if (choice === 'SAFE_MODE') {
+      const safeMode = await p.confirm({
+        message: i18n.t('Enable safe mode?\nThis will enable an Anthropic AI system prompt that intstructs the shell agent to never generate commands that can potentially cause changes on the server.\n⚠️ Warning: Safety still depends on the reliability of AI.'),
+      });
+      if (p.isCancel(safeMode)) return;
+      await setConfigs([['SAFE_MODE', safeMode ? 'true' : 'false']]);
+    } else if (choice === 'SYSTEM_PROMPT_FILE') {
+      const system_prompt_file = await p.text({
+        message: i18n.t('Enter a custom JSON system prompt file with the optional fields: { shell: ...., shell_safe: ..., chat: ...'),
+      });
+      if (p.isCancel(system_prompt_file)) return;
+
+      const systemPromptFileExists = await fileExists(system_prompt_file);
+      if (!systemPromptFileExists) {
+        throw new KnownError(
+          `${i18n.t('System prompt file does not exist or is not accessible:')} ${system_prompt_file}`
+        );
+      }
+
+      await setConfigs([['SYSTEM_PROMPT_FILE', system_prompt_file]]);
     } else if (choice === 'MODEL') {
       const model = await p.text({
         message: i18n.t('Enter the model you want to use'),
