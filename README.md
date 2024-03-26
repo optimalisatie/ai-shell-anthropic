@@ -261,10 +261,10 @@ If you want to help fix a bug or implement a feature in [Issues](https://github.
 
 ## Community
 
-Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room (Anthropic version).
+Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room (OpenAI version).
 
 <br><br>
-
+Original author:
 <p align="center">
    <a href="https://www.builder.io/m/developers">
       <picture>
