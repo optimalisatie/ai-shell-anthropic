@@ -9,7 +9,7 @@
    A CLI that converts natural language to shell commands.
 </h4>
 <p align="center">
-   <a href="https://www.npmjs.com/package/@builder.io/ai-shell"><img src="https://img.shields.io/npm/v/@builder.io/ai-shell" alt="Current version"></a>
+   <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
 </p>
 
 <p align="center">
@@ -22,26 +22,26 @@
 
 <br>
 
-# AI Shell
+# AI Shell Anthropic
 
 ## Setup
 
 > The minimum supported version of Node.js is v14
 
-1. Install _ai shell_:
+1. Install _ai shell anthropic_:
 
    ```sh
-   npm install -g @builder.io/ai-shell
+   npm install -g @optimization/ai-shell-anthropic
    ```
 
-2. Retrieve your API key from [OpenAI](https://platform.openai.com/account/api-keys)
+2. Retrieve your API key from [Anthropic](https://console.anthropic.com/)
 
-   > Note: If you haven't already, you'll have to create an account and set up billing.
+   > Note: If you haven't already, you'll have to create an account.
 
-3. Set the key so ai-shell can use it:
+3. Set the key so ai-shell-anthropic can use it:
 
    ```sh
-   ai config set OPENAI_KEY=<your token>
+   ai config set ANTHROPICAI_KEY=<your token>
    ```
 
    This will create a `.ai-shell` file in your home directory.
@@ -178,10 +178,9 @@ To get an interactive UI like below:
 
 ```bash
 ◆  Set config:
-│  ○ OpenAI Key
-│  ○ OpenAI API Endpoint
+│  ○ AnthropicAI Key
 │  ○ Silent Mode
-│  ● Model (gpt-3.5-turbo)
+│  ● Model (opus, sonnet or haiku, or a model version name, e.g. claude-3-haiku-20240307)
 │  ○ Language
 │  ○ Cancel
 └
@@ -195,7 +194,7 @@ Check the installed version with:
 ai --version
 ```
 
-If it's not the [latest version](https://github.com/BuilderIO/ai-shell/tags), run:
+If it's not the [latest version](https://github.com/optimalisatie/ai-shell-anthropic/tags), run:
 
 ```bash
 npm update -g @builder.io/ai-shell
@@ -209,19 +208,19 @@ ai update
 
 ## Common Issues
 
-### 429 error
-
-Some users are reporting a 429 from OpenAI. This is due to incorrect billing setup or excessive quota usage. Please follow [this guide](https://help.openai.com/en/articles/6891831-error-code-429-you-exceeded-your-current-quota-please-check-your-plan-and-billing-details) to fix it.
-
-You can activate billing at [this link](https://platform.openai.com/account/billing/overview). Make sure to add a payment method if not under an active grant from OpenAI.
-
 ## Motivation
+
+Original author: [BuilderIO](https://github.com/BuilderIO/ai-shell):
 
 I am not a bash wizard, and am dying for access to the copilot CLI, and got impatient.
 
+AnthropicAI: The original `ai-shell` script, created by [BuilderIO](https://github.com/BuilderIO), demonstrated the power of integrating OpenAI's language model into a command-line tool for generating and explaining shell commands. However, with the emergence of Anthropic AI and their advanced language models like Claude, there was an opportunity to explore the capabilities of Anthropic AI in the context of an AI-powered shell assistant.
+
+This port of ai-shell to Anthropic AI aims to leverage the strengths of Anthropic's language models, such as their focus on safety, transparency, and alignment with human values. By integrating Anthropic AI into the script, we can benefit from their state-of-the-art natural language processing capabilities while ensuring responsible and ethical AI assistance.
+
 ## Contributing
 
-If you want to help fix a bug or implement a feature in [Issues](https://github.com/BuilderIO/ai-shell/issues) (tip: look out for the `help wanted` label), checkout the [Contribution Guide](CONTRIBUTING.md) to learn how to setup the project.
+If you want to help fix a bug or implement a feature in [Issues](https://github.com/optimalisatie/ai-shell-anthropic/issues) (tip: look out for the `help wanted` label), checkout the [Contribution Guide](CONTRIBUTING.md) to learn how to setup the project.
 
 ## Credit
 
@@ -230,7 +229,7 @@ If you want to help fix a bug or implement a feature in [Issues](https://github.
 
 ## Community
 
-Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room
+Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room (OpenAI version).
 
 <br><br>
 
