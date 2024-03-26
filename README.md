@@ -10,7 +10,7 @@ A port of OpenAI based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-she
 
 ### Advantages
 - The Haiku model is low cost and super fast (see [#models](#models))
-- Anthropic AI appears to be more reliable and precise in its responses.
+- Anthropic AI is reliable and precise in its responses.
 - Opus model available on par with GPT-4 and Gemini.
 
 <p align="center">
