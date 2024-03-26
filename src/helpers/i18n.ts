@@ -6,6 +6,9 @@ import jpTranslation from '../locales/jp.json';
 import koTranslation from '../locales/ko.json';
 import frTranslation from '../locales/fr.json';
 import deTranslation from '../locales/de.json';
+import grTranslation from '../locales/gr.json';
+import nlTranslation from '../locales/nl.json';
+import itTranslation from '../locales/it.json';
 import ruTranslation from '../locales/ru.json';
 import ukTranslation from '../locales/uk.json';
 import viTranslation from '../locales/vi.json';
@@ -23,6 +26,9 @@ const languages: Record<string, string> = {
   jp: '日本語', // Japanese
   ko: '한국어', // Korean
   fr: 'Français', // French
+  gr: 'Ελληνικά',
+  nl: 'Nederlands',
+  it: 'Italiano',
   de: 'Deutsch', // German
   ru: 'Русский', // Russian
   uk: 'Українська', // Ukrainian
@@ -56,6 +62,15 @@ i18next.init({
     },
     de: {
       translation: deTranslation,
+    },
+    gr: {
+      translation: grTranslation,
+    },
+    nl: {
+      translation: nlTranslation,
+    },
+    it: {
+      translation: itTranslation,
     },
     ru: {
       translation: ruTranslation,

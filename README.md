@@ -6,8 +6,11 @@
 </h2>
 
 <h4 align="center">
-   A CLI that converts natural language to shell commands. A port of Anthropic based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-shell) to Anthropic AI using [anthropic-sdk-typescript](https://github.com/anthropics/anthropic-sdk-typescript).
+   A CLI that converts natural language to shell commands. 
 </h4>
+
+<p align="center">A port of Anthropic based [https://github.com/BuilderIO/ai-shell](@BuilderIO/ai-shell) to Anthropic AI using [https://github.com/anthropics/anthropic-sdk-typescript](anthropic-sdk-typescript).</p>
+
 <p align="center">
    <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
 </p>
@@ -34,7 +37,7 @@
    npm install -g @optimization/ai-shell-anthropic
    ```
 
-2. Retrieve your API key from [Anthropic](https://console.anthropic.com/)
+2. Retrieve your API key from [https://console.anthropic.com/](Anthropic)
 
    > Note: If you haven't already, you'll have to create an account.
 
@@ -151,6 +154,9 @@ The AI Shell's default language is English, but you can easily switch to your pr
 | Korean              | ko      |
 | French              | fr      |
 | German              | de      |
+| Italian             | it      |
+| Dutch               | nl      |
+| Greek               | gr      |
 | Russian             | ru      |
 | Ukrainian           | uk      |
 | Vietnamese          | vi      |
@@ -158,13 +164,13 @@ The AI Shell's default language is English, but you can easily switch to your pr
 | Portuguese          | pt      |
 | Turkish             | tr      |
 
-For instance, if you want to switch to Simplified Chinese, you can do so by setting the LANGUAGE value to zh-Hans:
+For instance, if you want to switch to Greek, you can do so by setting the LANGUAGE value to gr:
 
 ```sh
-ai config set LANGUAGE=zh-Hans
+ai config set LANGUAGE=gr
 ```
 
-This will set your language to Simplified Chinese.
+This will set your language to Greek.
 
 ### Config UI
 
