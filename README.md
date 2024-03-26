@@ -228,6 +228,7 @@ To get an interactive UI like below:
 ◆  Set config:
 │  ○ AnthropicAI Key
 │  ○ Silent Mode
+│  ○ Instant Mode
 │  ● Model (opus, sonnet or haiku, or a model version name, e.g. claude-3-haiku-20240307)
 │  ○ Language
 │  ○ Cancel
