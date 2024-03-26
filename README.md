@@ -142,11 +142,25 @@ To set the desired model, use the following command:
 ai config set MODEL=opus
 ```
 
-| Model            | Description     |
-| ------------------- | ------- |
-| Opus | .... |
-| Sonnet | .... |
-| Haiku | .... |
+Here's a list of the advantages of each Anthropic model for the shell AI tool:
+
+**Opus:**
+- Largest model with the most extensive knowledge base
+- Excels at complex and technical tasks, such as writing advanced shell scripts and analyzing system configurations
+- Provides the most detailed and comprehensive explanations for generated commands
+- Ideal for users who require the highest level of accuracy and thoroughness in their shell AI assistant
+
+**Sonnet:**
+- Well-balanced model that offers a good compromise between performance and efficiency
+- Generates concise and effective shell commands while still providing sufficient context and explanations
+- Suitable for a wide range of shell-related tasks, from basic file management to system administration
+- Recommended for users who want a versatile and reliable shell AI assistant without the extra computational overhead of the largest model
+
+**Haiku:**
+- Smallest and most efficient model, offering quick response times and lower resource consumption
+- Generates succinct and to-the-point shell commands, perfect for users who prefer a streamlined and minimalist approach
+- Focuses on the essential aspects of the task at hand, without providing extensive explanations or context
+- Best suited for users who prioritize speed and simplicity in their shell AI assistant, and are comfortable with a more concise output style
 
 ### Set Language
 
