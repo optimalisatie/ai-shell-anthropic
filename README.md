@@ -1,4 +1,6 @@
-<center>![Anthropic logo](./anthropic-logo.png)</center>
+<h2 align="center">
+   <img width="300" alt="AI Shell logo" src="[Anthropic logo](./anthropic-logo.png)">
+</h2>
 
 <h4 align="center">
    A CLI that converts natural language to shell commands. 
