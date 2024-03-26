@@ -137,7 +137,7 @@ ai config set SILENT_MODE=true
 When you trust the output of Anthropic AI for your requested commands, you can enable instant execution of the generated commands by using the flag `-i` or `--instant`:
 
 ```bash
-ai -i "calculate the size of all pdf files in this directory and show a summary per subdirectory"
+ai -i "show files modified yesterday"
 ```
 
 Alternatively, you can save the option as a preference using this command:
