@@ -134,15 +134,19 @@ ai config set SILENT_MODE=true
 
 ### Custom Anthropic Model
 
-| Model            | Description     |
-| ------------------- | ------- |
-| ...
+Anthropic offers a range of powerful language models that can be used to generate shell scripts and commands. You can select the Anthropic model that best suits your needs, either via the short hands `opus`, `sonnet`, and `haiku`, or by using a specific model version reference, e.g., `claude-3-haiku-20240307`. The default model is `haiku`.
 
-You can select the Anthropic model to use, either via the short hands `opus`, `sonnet` and `haiku` or by using a model version reference, e.g. `claude-3-haiku-20240307`. The default model is haiku.
+To set the desired model, use the following command:
 
 ```sh
 ai config set MODEL=opus
 ```
+
+| Model            | Description     |
+| ------------------- | ------- |
+| Opus | .... |
+| Sonnet | .... |
+| Haiku | .... |
 
 ### Set Language
 
