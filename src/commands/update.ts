@@ -7,12 +7,12 @@ export default command(
   {
     name: 'update',
     help: {
-      description: 'Update AI Shell to the latest version',
+      description: 'Update AI Shell Anthropic to the latest version',
     },
   },
   async () => {
     console.log('');
-    const command = `npm update -g @builder.io/ai-shell`;
+    const command = `npm update -g @optimization/ai-shell-anthropic`;
     console.log(dim(`${i18n.t('Running')}: ${command}`));
     console.log('');
     await execaCommand(command, {

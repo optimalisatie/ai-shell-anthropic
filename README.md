@@ -1,15 +1,15 @@
-<h2 align="center">
-   <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb5b9997cec2c4fffb3e5c5e9bb4fed7d">
-      <img width="300" alt="AI Shell logo" src="[https://user-images.githubusercontent.com/844291/230786555-a58479e4-75f3-4222-a6eb-74c5af953eac.png](https://cdn.builder.io/api/v1/image/assets%2FYJIGb4i01jvw0SRdL5Bt%2Fb7f9d2d9911a4199a9d26f8ba210b3f8)">
-    </picture>
-</h2>
+<center>![Anthropic logo](./anthropic-logo.png)</center>
 
 <h4 align="center">
    A CLI that converts natural language to shell commands. 
 </h4>
 
-<p align="center">A port of Anthropic based [https://github.com/BuilderIO/ai-shell](@BuilderIO/ai-shell) to Anthropic AI using [https://github.com/anthropics/anthropic-sdk-typescript](anthropic-sdk-typescript).</p>
+A port of OpenAI based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-shell) to Anthropic AI using [anthropic-sdk-typescript](https://github.com/anthropics/anthropic-sdk-typescript).
+
+### Advantages
+- The Haiku model is low cost and super fast (see [#models](#models))
+- Anthropic AI appears to be more reliable and precise in its responses.
+- Opus model available on par with GPT-4 and Gemini.
 
 <p align="center">
    <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
@@ -132,6 +132,10 @@ ai config set SILENT_MODE=true
 
 ### Custom Anthropic Model
 
+| Model            | Description     |
+| ------------------- | ------- |
+| ...
+
 You can select the Anthropic model to use, either via the short hands `opus`, `sonnet` and `haiku` or by using a model version reference, e.g. `claude-3-haiku-20240307`. The default model is haiku.
 
 ```sh
@@ -203,7 +207,7 @@ ai --version
 If it's not the [latest version](https://github.com/optimalisatie/ai-shell-anthropic/tags), run:
 
 ```bash
-npm update -g @builder.io/ai-shell
+npm update -g @optimization/ai-shell-anthropic
 ```
 
 Or just use AI shell:
@@ -216,13 +220,15 @@ ai update
 
 ## Motivation
 
-Original author: [BuilderIO](https://github.com/BuilderIO/ai-shell):
+Original author [BuilderIO](https://github.com/BuilderIO/ai-shell):
 
-I am not a bash wizard, and am dying for access to the copilot CLI, and got impatient.
+> I am not a bash wizard, and am dying for access to the copilot CLI, and got impatient.
 
-AnthropicAI: The original `ai-shell` script, created by [BuilderIO](https://github.com/BuilderIO), demonstrated the power of integrating Anthropic's language model into a command-line tool for generating and explaining shell commands. However, with the emergence of Anthropic AI and their advanced language models like Claude, there was an opportunity to explore the capabilities of Anthropic AI in the context of an AI-powered shell assistant.
+AnthropicAI: 
 
-This port of ai-shell to Anthropic AI aims to leverage the strengths of Anthropic's language models, such as their focus on safety, transparency, and alignment with human values. By integrating Anthropic AI into the script, we can benefit from their state-of-the-art natural language processing capabilities while ensuring responsible and ethical AI assistance.
+> The original ai-shell script, created by [BuilderIO](https://github.com/BuilderIO), demonstrated the power of integrating OpenAI's language model into a command-line tool for generating and explaining shell commands. However, with the emergence of Anthropic AI and their advanced language models like Claude, there was an opportunity to explore the capabilities of Anthropic AI in the context of an AI-powered shell assistant.
+> 
+> This port of ai-shell to Anthropic AI aims to leverage the strengths of Anthropic's language models, such as their focus on safety, transparency, and alignment with human values. By integrating Anthropic AI into the script, we can benefit from their state-of-the-art natural language processing capabilities while ensuring responsible and ethical AI assistance.
 
 ## Contributing
 
