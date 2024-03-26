@@ -17,8 +17,7 @@ export default command(
   },
   async () => {
     const {
-      OPENAI_KEY: key,
-      OPENAI_API_ENDPOINT: apiEndpoint,
+      ANTHROPICAI_KEY: key,
       MODEL: model,
     } = await getConfig();
     const chatHistory: ChatCompletionRequestMessage[] = [];
@@ -76,20 +75,17 @@ async function getResponse({
   number = 1,
   key,
   model,
-  apiEndpoint,
 }: {
   prompt: string | ChatCompletionRequestMessage[];
   number?: number;
   model?: string;
   key: string;
-  apiEndpoint: string;
 }) {
   const stream = await generateCompletion({
     prompt,
     key,
     model,
     number,
-    apiEndpoint,
   });
 
   const iterableStream = streamToIterable(stream);

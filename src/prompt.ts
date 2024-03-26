@@ -98,7 +98,7 @@ export async function prompt({
   silentMode,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
-    OPENAI_KEY: key,
+    ANTHROPICAI_KEY: key,
     SILENT_MODE,
     OPENAI_API_ENDPOINT: apiEndpoint,
     MODEL: model,

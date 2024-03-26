@@ -1,3 +1,7 @@
 node_modules
 .DS_Store
+ai-shell-anthropic.sublime-project
+ai-shell-anthropic.sublime-workspace
 dist
+tmp
+rsync.conf.json

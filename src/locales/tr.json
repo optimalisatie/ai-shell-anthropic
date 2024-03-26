@@ -4,7 +4,7 @@
   "send a message ('exit' to quit)": "bir mesaj gönder (çıkmak için 'exit' yaz)",
   "Please enter a prompt.": "Lütfen bir bilgi istemi girin.",
   "THINKING...": "DÜŞÜNÜYOR...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Lütfen OpenAI anahtarınızı bunla ayarlayın `ai config set OPENAI_KEY=<sizin anahtarınız>`",
+  "Please set your OpenAI API key via `ai config set ANTHROPICAI_KEY=<your token>`": "Lütfen OpenAI anahtarınızı bunla ayarlayın `ai config set ANTHROPICAI_KEY=<sizin anahtarınız>`",
   "Set config": "Yapılandırmayı ayarla",
   "Enter your OpenAI API key": "OpenAI API anahtarınızı girin",
   "(not set)": "(ayarlanmadı)",

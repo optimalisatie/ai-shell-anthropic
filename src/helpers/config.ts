@@ -27,10 +27,10 @@ const parseAssert = (name: string, condition: any, message: string) => {
 };
 
 const configParsers = {
-  OPENAI_KEY(key?: string) {
+  ANTHROPICAI_KEY(key?: string) {
     if (!key) {
       throw new KnownError(
-        `Please set your OpenAI API key via \`${commandName} config set OPENAI_KEY=<your token>\`` // TODO: i18n
+        `Please set your AnthropicAI API key via \`${commandName} config set ANTHROPICAI_KEY=<your token>\`` // TODO: i18n
       );
     }
 
@@ -45,9 +45,6 @@ const configParsers = {
   },
   SILENT_MODE(mode?: string) {
     return String(mode).toLowerCase() === 'true';
-  },
-  OPENAI_API_ENDPOINT(apiEndpoint?: string) {
-    return apiEndpoint || 'https://api.openai.com/v1';
   },
   LANGUAGE(language?: string) {
     return language || 'en';
@@ -120,10 +117,10 @@ export const showConfigUI = async () => {
       options: [
         {
           label: i18n.t('OpenAI Key'),
-          value: 'OPENAI_KEY',
-          hint: hasOwn(config, 'OPENAI_KEY')
+          value: 'ANTHROPICAI_KEY',
+          hint: hasOwn(config, 'ANTHROPICAI_KEY')
             ? // Obfuscate the key
-              'sk-...' + config.OPENAI_KEY.slice(-3)
+              'sk-...' + config.ANTHROPICAI_KEY.slice(-3)
             : i18n.t('(not set)'),
         },
         {
@@ -162,7 +159,7 @@ export const showConfigUI = async () => {
 
     if (p.isCancel(choice)) return;
 
-    if (choice === 'OPENAI_KEY') {
+    if (choice === 'ANTHROPICAI_KEY') {
       const key = await p.text({
         message: i18n.t('Enter your OpenAI API key'),
         validate: (value) => {
@@ -172,7 +169,7 @@ export const showConfigUI = async () => {
         },
       });
       if (p.isCancel(key)) return;
-      await setConfigs([['OPENAI_KEY', key]]);
+      await setConfigs([['ANTHROPICAI_KEY', key]]);
     } else if (choice === 'OPENAI_API_ENDPOINT') {
       const apiEndpoint = await p.text({
         message: i18n.t('Enter your OpenAI API Endpoint'),
