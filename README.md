@@ -9,7 +9,7 @@
 A port of OpenAI based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-shell) to Anthropic AI using [anthropic-sdk-typescript](https://github.com/anthropics/anthropic-sdk-typescript).
 
 ### Advantages
-- The Haiku model is low cost and super fast (see [#models](#models))
+- The Haiku model is low cost and super fast (see [#models](#custom-anthropic-model))
 - Anthropic AI is reliable and precise in its responses.
 - Opus model available on par with GPT-4 and Gemini.
 
