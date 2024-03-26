@@ -8,7 +8,7 @@
   "Set config": "Yapılandırmayı ayarla",
   "Enter your Anthropic API key": "Anthropic API anahtarınızı girin",
   "(not set)": "(ayarlanmadı)",
-  "Anthropic Key": "Anthropic Anahtarınız",
+  "Anthropic API Key": "Anthropic Anahtarınız",
   "Please enter a key": "Lütfen bir anahtar girin",
   "Anthropic API Endpoint": "Anthropic API Uçnoktası",
   "Enter your Anthropic API Endpoint": "Anthropic API Uçnoktanızı girin",

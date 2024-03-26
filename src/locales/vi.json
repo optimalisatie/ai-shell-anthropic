@@ -8,7 +8,7 @@
   "Set config": "Cài đặt cấu hình",
   "Enter your Anthropic API key": "Nhập khóa API Anthropic của bạn",
   "(not set)": "(không được đặt)",
-  "Anthropic Key": "Khóa Anthropic",
+  "Anthropic API Key": "Khóa Anthropic",
   "Please enter a key": "Vui lòng nhập một khóa",
   "Anthropic API Endpoint": "Điểm cuối API Anthropic",
   "Enter your Anthropic API Endpoint": "Nhập Điểm cuối API Anthropic của bạn",

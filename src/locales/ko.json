@@ -8,7 +8,7 @@
   "Set config": "설정",
   "Enter your Anthropic API key": "Anthropic API 키를 입력하세요.",
   "(not set)": "(설정되지 않음)",
-  "Anthropic Key": "Anthropic 키",
+  "Anthropic API Key": "Anthropic 키",
   "Please enter a key": "키를 입력하세요.",
   "Anthropic API Endpoint": "Anthropic API 엔드포인트",
   "Enter your Anthropic API Endpoint": "Anthropic API 엔드포인트를 입력하세요.",

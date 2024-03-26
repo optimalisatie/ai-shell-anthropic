@@ -46,6 +46,9 @@ const configParsers = {
   SILENT_MODE(mode?: string) {
     return String(mode).toLowerCase() === 'true';
   },
+  INSTANT_MODE(mode?: string) {
+    return String(mode).toLowerCase() === 'true';
+  },
   LANGUAGE(language?: string) {
     return language || 'en';
   },
@@ -116,7 +119,7 @@ export const showConfigUI = async () => {
       message: i18n.t('Set config') + ':',
       options: [
         {
-          label: i18n.t('Anthropic Key'),
+          label: i18n.t('Anthropic API Key'),
           value: 'ANTHROPICAI_KEY',
           hint: hasOwn(config, 'ANTHROPICAI_KEY')
             ? // Obfuscate the key
@@ -128,6 +131,13 @@ export const showConfigUI = async () => {
           value: 'SILENT_MODE',
           hint: hasOwn(config, 'SILENT_MODE')
             ? config.SILENT_MODE.toString()
+            : i18n.t('(not set)'),
+        },
+        {
+          label: i18n.t('Instant Mode'),
+          value: 'INSTANT_MODE',
+          hint: hasOwn(config, 'INSTANT_MODE')
+            ? config.INSTANT_MODE.toString()
             : i18n.t('(not set)'),
         },
         {
@@ -169,6 +179,12 @@ export const showConfigUI = async () => {
       });
       if (p.isCancel(silentMode)) return;
       await setConfigs([['SILENT_MODE', silentMode ? 'true' : 'false']]);
+    } else if (choice === 'INSTANT_MODE') {
+      const instantMode = await p.confirm({
+        message: i18n.t('Enable instant mode?\n⚠️ Warning: Enabling instant mode allows the AI-generated commands to be executed immediately without any further confirmation.\n'),
+      });
+      if (p.isCancel(instantMode)) return;
+      await setConfigs([['INSTANT_MODE', instantMode ? 'true' : 'false']]);
     } else if (choice === 'MODEL') {
       const model = await p.text({
         message: i18n.t('Enter the model you want to use'),

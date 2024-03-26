@@ -51,7 +51,8 @@ export default command(
       const infoSpin = spinner();
       infoSpin.start(i18n.t(`THINKING...`));
 
-      const stream = await generateCompletion({ prompt, key, model });
+      const chatMode = true;
+      const stream = await generateCompletion({ prompt, key, model, chatMode });
       const readResponse = readData(stream);
 
       infoSpin.stop(`${green('AI Shell:')}`);

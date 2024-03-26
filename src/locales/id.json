@@ -8,7 +8,7 @@
   "Set config": "Atur konfigurasi",
   "Enter your Anthropic API key": "Masukkan kunci API Anthropic Anda",
   "(not set)": "(belum diatur)",
-  "Anthropic Key": "Kunci Anthropic",
+  "Anthropic API Key": "Kunci Anthropic",
   "Please enter a key": "Silakan masukkan kunci",
   "Anthropic API Endpoint": "Titik Akhir API Anthropic",
   "Enter your Anthropic API Endpoint": "Masukkan Titik Akhir API Anthropic Anda",

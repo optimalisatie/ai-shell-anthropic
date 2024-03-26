@@ -8,7 +8,7 @@
 "Set config": "Configuratie instellen",
 "Enter your Anthropic API key": "Voer uw Anthropic API-sleutel in",
 "(not set)": "(niet ingesteld)",
-"Anthropic Key": "Anthropic-sleutel",
+"Anthropic API Key": "Anthropic-sleutel",
 "Please enter a key": "Voer een sleutel in",
 "Anthropic API Endpoint": "Anthropic API-eindpunt",
 "Enter your Anthropic API Endpoint": "Voer uw Anthropic API-eindpunt in",

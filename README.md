@@ -118,7 +118,7 @@ app.get('/oldurl', (req, res) => {
 \`\`\`
 ```
 
-### Silent mode (skip explanations)
+### Silent Mode (Skip Explanations)
 
 You can disable and skip the explanation section by using the flag `-s` or `--silent`
 
@@ -126,11 +126,29 @@ You can disable and skip the explanation section by using the flag `-s` or `--si
 ai -s list all log files
 ```
 
-or save the option as a preference using this command:
+Alternatively, you can save the option as a preference using this command:
 
 ```bash
 ai config set SILENT_MODE=true
 ```
+
+### Instant Mode (Execute Instantly)
+
+When you trust the output of Anthropic AI for your requested commands, you can enable instant execution of the generated commands by using the flag `-i` or `--instant`:
+
+```bash
+ai -i "calculate the size of all pdf files in this directory and show a summary per subdirectory"
+```
+
+Alternatively, you can save the option as a preference using this command:
+
+```bash
+ai config set INSTANT_MODE=true
+```
+
+⚠️ **Warning:** Enabling instant mode allows the AI-generated commands to be executed immediately without any further confirmation. This can be potentially dangerous. Use this feature with caution and only when you fully trust the AI's output for your specific use case. Make sure to review and test the generated commands in a safe environment before relying on instant mode for critical tasks or sensitive data. 
+
+Remember, while AI assistants like Anthropic AI can be incredibly helpful, they are not infallible. It's always your responsibility to ensure the safety and reliability of the commands you execute on your system.
 
 ### Custom Anthropic Model
 

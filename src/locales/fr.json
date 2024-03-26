@@ -8,7 +8,7 @@
   "Set config": "Configurer",
   "Enter your Anthropic API key": "Entrez votre clé API Anthropic",
   "(not set)": "(non défini)",
-  "Anthropic Key": "Clé Anthropic",
+  "Anthropic API Key": "Clé Anthropic",
   "Please enter a key": "Veuillez entrer une clé",
   "Anthropic API Endpoint": "Point de terminaison de l'API Anthropic",
   "Enter your Anthropic API Endpoint": "Entrez votre point de terminaison d'API Anthropic",

@@ -8,7 +8,7 @@
   "Set config": "設定",
   "Enter your Anthropic API key": "Anthropic APIキーを入力してください",
   "(not set)": "(未設定)",
-  "Anthropic Key": "Anthropicキー",
+  "Anthropic API Key": "Anthropicキー",
   "Please enter a key": "キーを入力してください",
   "Anthropic API Endpoint": "Anthropic APIエンドポイント",
   "Enter your Anthropic API Endpoint": "Anthropic APIエンドポイントを入力してください",

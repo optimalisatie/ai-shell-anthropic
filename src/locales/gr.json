@@ -8,7 +8,7 @@
 "Set config": "Ορισμός διαμόρφωσης",
 "Enter your Anthropic API key": "Εισάγετε το κλειδί API της Anthropic",
 "(not set)": "(δεν έχει οριστεί)",
-"Anthropic Key": "Κλειδί Anthropic",
+"Anthropic API Key": "Κλειδί Anthropic",
 "Please enter a key": "Παρακαλώ εισάγετε ένα κλειδί",
 "Anthropic API Endpoint": "Τελικό σημείο API της Anthropic",
 "Enter your Anthropic API Endpoint": "Εισάγετε το τελικό σημείο API της Anthropic",

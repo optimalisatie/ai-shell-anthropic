@@ -20,20 +20,26 @@ cli(
       },
       silent: {
         type: Boolean,
-        description: 'Less verbose, skip printing the command explanation ',
+        description: 'Skip printing the command explanation',
         alias: 's',
+      },
+      instant: {
+        type: Boolean,
+        description: 'Instantly execute generated commands',
+        alias: 'i',
       },
     },
     commands: [config, chat, update],
   },
   (argv) => {
     const silentMode = argv.flags.silent;
+    const instantMode = argv.flags.instant;
     const promptText = argv._.join(' ');
 
     if (promptText.trim() === 'update') {
       update.callback?.(argv);
     } else {
-      prompt({ usePrompt: promptText, silentMode }).catch((error) => {
+      prompt({ usePrompt: promptText, silentMode, instantMode }).catch((error) => {
         console.error(`\n${red('✖')} ${error.message}`);
         handleCliError(error);
         process.exit(1);

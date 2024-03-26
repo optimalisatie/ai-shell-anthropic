@@ -8,7 +8,7 @@
   "Set config": "تعيين التكوين",
   "Enter your Anthropic API key": "أدخل مفتاح Anthropic API الخاص بك",
   "(not set)": "(غير مضبوط)",
-  "Anthropic Key": "مفتاح Anthropic",
+  "Anthropic API Key": "مفتاح Anthropic",
   "Please enter a key": "الرجاء إدخال مفتاح",
   "Anthropic API Endpoint": "نقطة نهاية Anthropic API",
   "Enter your Anthropic API Endpoint": "أدخل نقطة نهاية Anthropic API الخاصة بك",

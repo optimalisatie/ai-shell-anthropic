@@ -24,9 +24,7 @@ const init = async () => {
 const examples: string[] = [];
 const initPromise = init();
 initPromise.then(() => {
-  examples.push(i18n.t('delete all log files'));
   examples.push(i18n.t('list js files'));
-  examples.push(i18n.t('fetch me a random joke'));
   examples.push(i18n.t('list all commits'));
 });
 
@@ -96,14 +94,16 @@ async function promptForRevision() {
 export async function prompt({
   usePrompt,
   silentMode,
+  instantMode,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
     ANTHROPICAI_KEY: key,
     SILENT_MODE,
-    OPENAI_API_ENDPOINT: apiEndpoint,
+    INSTANT_MODE,
     MODEL: model,
   } = await getConfig();
   const skipCommandExplanation = silentMode || SILENT_MODE;
+  const skipCommandConfirmation = instantMode || INSTANT_MODE;
 
   console.log('');
   p.intro(`${cyan(`${projectName}`)}`);
@@ -115,41 +115,53 @@ export async function prompt({
     prompt: thePrompt,
     key,
     model,
-    apiEndpoint,
   });
-  spin.stop(`${i18n.t('Your script')}:`);
-  console.log('');
-  const script = await readScript(process.stdout.write.bind(process.stdout));
-  console.log('script', script);
-  console.log('');
-  console.log('');
-  console.log(dim('•'));
-  if (!skipCommandExplanation) {
-    spin.start(i18n.t(`Getting explanation...`));
-    const info = await readInfo(process.stdout.write.bind(process.stdout));
-    if (!info) {
-      const { readExplanation } = await getExplanation({
-        script,
-        key,
-        apiEndpoint,
-      });
-      spin.stop(`${i18n.t('Explanation')}:`);
-      console.log('');
-      await readExplanation(process.stdout.write.bind(process.stdout));
-      console.log('');
-      console.log('');
-      console.log(dim('•'));
-    }
+
+  if (!skipCommandConfirmation) {
+    spin.stop(`${i18n.t('Your script')}:`);  
+  } else {
+    spin.stop(`${i18n.t('Executing script')}:`);
   }
 
-  await runOrReviseFlow(script, key, model, apiEndpoint, silentMode);
+  const script = await readScript(process.stdout.write.bind(process.stdout));
+
+  console.log('');
+
+  if (skipCommandConfirmation) {
+    await runScript(script);
+    process.exit(1);
+  } else {
+
+    
+    console.log('');
+    console.log('');
+    console.log(dim('•'));
+
+    if (!skipCommandExplanation) {
+      spin.start(i18n.t(`Getting explanation...`));
+      const info = await readInfo(process.stdout.write.bind(process.stdout));
+      if (!info) {
+        const { readExplanation } = await getExplanation({
+          script,
+          key,
+        });
+        spin.stop(`${i18n.t('Explanation')}:`);
+        console.log('');
+        await readExplanation(process.stdout.write.bind(process.stdout));
+        console.log('');
+        console.log('');
+        console.log(dim('•'));
+      }
+    }
+
+    await runOrReviseFlow(script, key, model, silentMode);
+  }
 }
 
 async function runOrReviseFlow(
   script: string,
   key: string,
   model: string,
-  apiEndpoint: string,
   silentMode?: boolean
 ) {
   const emptyScript = script.trim() === '';
@@ -187,7 +199,7 @@ async function runOrReviseFlow(
         label: '🔁 ' + i18n.t('Revise'),
         hint: i18n.t('Give feedback via prompt and get a new result'),
         value: async () => {
-          await revisionFlow(script, key, model, apiEndpoint, silentMode);
+          await revisionFlow(script, key, model, silentMode);
         },
       },
       {
@@ -218,7 +230,6 @@ async function revisionFlow(
   currentScript: string,
   key: string,
   model: string,
-  apiEndpoint: string,
   silentMode?: boolean
 ) {
   const revision = await promptForRevision();
@@ -229,7 +240,6 @@ async function revisionFlow(
     code: currentScript,
     key,
     model,
-    apiEndpoint,
   });
   spin.stop(`${i18n.t(`Your new script`)}:`);
 
@@ -246,7 +256,6 @@ async function revisionFlow(
       script,
       key,
       model,
-      apiEndpoint,
     });
 
     infoSpin.stop(`${i18n.t('Explanation')}:`);
@@ -257,7 +266,7 @@ async function revisionFlow(
     console.log(dim('•'));
   }
 
-  await runOrReviseFlow(script, key, model, apiEndpoint, silentMode);
+  await runOrReviseFlow(script, key, model, silentMode);
 }
 
 export const parseAssert = (name: string, condition: any, message: string) => {

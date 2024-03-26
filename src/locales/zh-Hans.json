@@ -8,7 +8,7 @@
   "Set config": "设置配置",
   "Enter your Anthropic API key": "输入您的 Anthropic API 密钥",
   "(not set)": "(未设置)",
-  "Anthropic Key": "Anthropic 密钥",
+  "Anthropic API Key": "Anthropic 密钥",
   "Please enter a key": "请输入密钥",
   "Anthropic API Endpoint": "Anthropic API 端点",
   "Enter your Anthropic API Endpoint": "输入您的 Anthropic API 端点",

@@ -8,7 +8,7 @@
   "Set config": "Установить конфигурацию",
   "Enter your Anthropic API key": "Введите ваш ключ Anthropic API",
   "(not set)": "(не установлено)",
-  "Anthropic Key": "Ключ Anthropic",
+  "Anthropic API Key": "Ключ Anthropic",
   "Please enter a key": "Пожалуйста, введите ключ",
   "Anthropic API Endpoint": "Конечная точка Anthropic API",
   "Enter your Anthropic API Endpoint": "Введите конечную точку Anthropic API Anthropic",
