@@ -1,5 +1,5 @@
 <h2 align="center">
-   <img width="300" alt="Anthropic logo" src="[Anthropic logo](./anthropic-logo.png)">
+   <img width="300" alt="Anthropic logo" src="./anthropic-logo.png">
 </h2>
 
 <h4 align="center">
