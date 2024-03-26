@@ -270,8 +270,10 @@ To get an interactive UI like below:
 │  ○ AnthropicAI Key
 │  ○ Silent Mode
 │  ○ Instant Mode
+│  ○ Safe Mode
 │  ● Model (opus, sonnet or haiku, or a model version name, e.g. claude-3-haiku-20240307)
 │  ○ Language
+│  ○ System Prompt File
 │  ○ Cancel
 └
 ```

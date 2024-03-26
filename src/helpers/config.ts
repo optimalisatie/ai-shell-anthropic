@@ -237,8 +237,11 @@ export const showConfigUI = async () => {
     } else if (choice === 'SYSTEM_PROMPT_FILE') {
       const system_prompt_file = await p.text({
         message: i18n.t('Enter a custom JSON system prompt file with the optional fields: { shell: ...., shell_safe: ..., chat: ...'),
+        initialValue: (config.SYSTEM_PROMPT_FILE) ? config.SYSTEM_PROMPT_FILE : '',
       });
       if (p.isCancel(system_prompt_file)) return;
+
+      if (system_prompt_file && system_prompt_file.trim() !== '') {
 
       const systemPromptFileExists = await fileExists(system_prompt_file);
       if (!systemPromptFileExists) {
@@ -246,11 +249,13 @@ export const showConfigUI = async () => {
           `${i18n.t('System prompt file does not exist or is not accessible:')} ${system_prompt_file}`
         );
       }
+    }
 
       await setConfigs([['SYSTEM_PROMPT_FILE', system_prompt_file]]);
     } else if (choice === 'MODEL') {
       const model = await p.text({
         message: i18n.t('Enter the model you want to use'),
+        initialValue: (config.MODEL) ? config.MODEL : '',
       });
       if (p.isCancel(model)) return;
       await setConfigs([['MODEL', model]]);

@@ -33,9 +33,11 @@ const sample = <T>(arr: T[]): T | undefined => {
   return len ? arr[Math.floor(Math.random() * len)] : undefined;
 };
 
-async function runScript(script: string) {
-  p.outro(`${i18n.t('Running')}: ${script}`);
-  console.log('');
+async function runScript(script: string, silent: boolean) {
+  if (!silent) {
+    p.outro(`${i18n.t('Running')}: ${script}`);
+    console.log('');
+  }
   await execaCommand(script, {
     stdio: 'inherit',
     shell: process.env.SHELL || true,
@@ -133,19 +135,17 @@ export async function prompt({
     systemPromptConfig,
   });
 
-  if (!skipCommandConfirmation) {
-    spin.stop(`${i18n.t('Your script')}:`);  
-  } else {
-    spin.stop(`${i18n.t('Executing script')}:`);
-  }
-
   const script = await readScript(process.stdout.write.bind(process.stdout));
 
-  console.log('');
-
+  if (!skipCommandConfirmation) {
+    spin.stop(`${i18n.t('Your script')}: ${script}`);
+  } else {
+    spin.stop(`${i18n.t('Executing script')}: ${script}`);
+    console.log('');
+  }
   if (skipCommandConfirmation) {
     try {
-      await runScript(script);
+      await runScript(script, true);
     } catch (err) { 
       console.error('error executing script', err);
     }
