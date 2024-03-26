@@ -6,7 +6,7 @@
 </h2>
 
 <h4 align="center">
-   A CLI that converts natural language to shell commands.
+   A CLI that converts natural language to shell commands. A port of Anthropic based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-shell) to Anthropic AI using [anthropic-sdk-typescript](https://github.com/anthropics/anthropic-sdk-typescript).
 </h4>
 <p align="center">
    <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
@@ -127,12 +127,12 @@ or save the option as a preference using this command:
 ai config set SILENT_MODE=true
 ```
 
-### Custom API endpoint
+### Custom Anthropic Model
 
-You can custom OpenAI API endpoint to set OPENAI_API_ENDPOINT（default: `https://api.openai.com/v1`）
+You can select the Anthropic model to use, either via the short hands `opus`, `sonnet` and `haiku` or by using a model version reference, e.g. `claude-3-haiku-20240307`. The default model is haiku.
 
 ```sh
-ai config set OPENAI_API_ENDPOINT=<your proxy endpoint>
+ai config set MODEL=opus
 ```
 
 ### Set Language
@@ -214,7 +214,7 @@ Original author: [BuilderIO](https://github.com/BuilderIO/ai-shell):
 
 I am not a bash wizard, and am dying for access to the copilot CLI, and got impatient.
 
-AnthropicAI: The original `ai-shell` script, created by [BuilderIO](https://github.com/BuilderIO), demonstrated the power of integrating OpenAI's language model into a command-line tool for generating and explaining shell commands. However, with the emergence of Anthropic AI and their advanced language models like Claude, there was an opportunity to explore the capabilities of Anthropic AI in the context of an AI-powered shell assistant.
+AnthropicAI: The original `ai-shell` script, created by [BuilderIO](https://github.com/BuilderIO), demonstrated the power of integrating Anthropic's language model into a command-line tool for generating and explaining shell commands. However, with the emergence of Anthropic AI and their advanced language models like Claude, there was an opportunity to explore the capabilities of Anthropic AI in the context of an AI-powered shell assistant.
 
 This port of ai-shell to Anthropic AI aims to leverage the strengths of Anthropic's language models, such as their focus on safety, transparency, and alignment with human values. By integrating Anthropic AI into the script, we can benefit from their state-of-the-art natural language processing capabilities while ensuring responsible and ethical AI assistance.
 
@@ -229,7 +229,7 @@ If you want to help fix a bug or implement a feature in [Issues](https://github.
 
 ## Community
 
-Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room (OpenAI version).
+Come join the [Builder.io discord](https://discord.gg/EMx6e58xnw) and chat with us in the #ai-shell room (Anthropic version).
 
 <br><br>
 

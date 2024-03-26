@@ -3,8 +3,6 @@ import { spinner, intro, outro, text, isCancel } from '@clack/prompts';
 import { cyan, green } from 'kolorist';
 import { generateCompletion, readData } from '../helpers/completion';
 import { getConfig } from '../helpers/config';
-import { streamToIterable } from '../helpers/stream-to-iterable';
-import { ChatCompletionRequestMessage } from 'openai';
 import i18n from '../helpers/i18n';
 
 export default command(
@@ -16,15 +14,13 @@ export default command(
     },
   },
   async () => {
-    const {
-      ANTHROPICAI_KEY: key,
-      MODEL: model,
-    } = await getConfig();
-    const chatHistory: ChatCompletionRequestMessage[] = [];
+    const { ANTHROPICAI_KEY: key, MODEL: model } = await getConfig();
+    const chatHistory: { role: string; content: string }[] = [];
 
     console.log('');
     intro(i18n.t('Starting new conversation'));
-    const prompt = async () => {
+
+    const promptUser = async () => {
       const msgYou = `${i18n.t('You')}:`;
       const userPrompt = (await text({
         message: `${cyan(msgYou)}`,
@@ -39,56 +35,39 @@ export default command(
         process.exit(0);
       }
 
+      chatHistory.push({ role: 'user', content: userPrompt });
+      await getResponse({ prompt: chatHistory, key, model });
+    };
+
+    const getResponse = async ({
+      prompt,
+      key,
+      model,
+    }: {
+      prompt: { role: string; content: string }[];
+      key: string;
+      model?: string;
+    }) => {
       const infoSpin = spinner();
       infoSpin.start(i18n.t(`THINKING...`));
-      chatHistory.push({
-        role: 'user',
-        content: userPrompt,
-      });
-      const { readResponse } = await getResponse({
-        prompt: chatHistory,
-        key,
-        model,
-        apiEndpoint,
-      });
+
+      const stream = await generateCompletion({ prompt, key, model });
+      const readResponse = readData(stream);
 
       infoSpin.stop(`${green('AI Shell:')}`);
       console.log('');
+
       const fullResponse = await readResponse(
         process.stdout.write.bind(process.stdout)
       );
-      chatHistory.push({
-        role: 'assistant',
-        content: fullResponse,
-      });
+
+      chatHistory.push({ role: 'assistant', content: fullResponse });
       console.log('');
       console.log('');
-      prompt();
+
+      await promptUser();
     };
 
-    prompt();
+    await promptUser();
   }
 );
-
-async function getResponse({
-  prompt,
-  number = 1,
-  key,
-  model,
-}: {
-  prompt: string | ChatCompletionRequestMessage[];
-  number?: number;
-  model?: string;
-  key: string;
-}) {
-  const stream = await generateCompletion({
-    prompt,
-    key,
-    model,
-    number,
-  });
-
-  const iterableStream = streamToIterable(stream);
-
-  return { readResponse: readData(iterableStream) };
-}

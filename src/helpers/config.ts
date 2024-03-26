@@ -38,7 +38,7 @@ const configParsers = {
   },
   MODEL(model?: string) {
     if (!model || model.length === 0) {
-      return 'gpt-3.5-turbo';
+      return 'haiku';
     }
 
     return model as TiktokenModel;
@@ -116,18 +116,11 @@ export const showConfigUI = async () => {
       message: i18n.t('Set config') + ':',
       options: [
         {
-          label: i18n.t('OpenAI Key'),
+          label: i18n.t('Anthropic Key'),
           value: 'ANTHROPICAI_KEY',
           hint: hasOwn(config, 'ANTHROPICAI_KEY')
             ? // Obfuscate the key
               'sk-...' + config.ANTHROPICAI_KEY.slice(-3)
-            : i18n.t('(not set)'),
-        },
-        {
-          label: i18n.t('OpenAI API Endpoint'),
-          value: 'OPENAI_API_ENDPOINT',
-          hint: hasOwn(config, 'OPENAI_API_ENDPOINT')
-            ? config.OPENAI_API_ENDPOINT
             : i18n.t('(not set)'),
         },
         {
@@ -161,7 +154,7 @@ export const showConfigUI = async () => {
 
     if (choice === 'ANTHROPICAI_KEY') {
       const key = await p.text({
-        message: i18n.t('Enter your OpenAI API key'),
+        message: i18n.t('Enter your Anthropic API key'),
         validate: (value) => {
           if (!value.length) {
             return i18n.t('Please enter a key');
@@ -170,12 +163,6 @@ export const showConfigUI = async () => {
       });
       if (p.isCancel(key)) return;
       await setConfigs([['ANTHROPICAI_KEY', key]]);
-    } else if (choice === 'OPENAI_API_ENDPOINT') {
-      const apiEndpoint = await p.text({
-        message: i18n.t('Enter your OpenAI API Endpoint'),
-      });
-      if (p.isCancel(apiEndpoint)) return;
-      await setConfigs([['OPENAI_API_ENDPOINT', apiEndpoint]]);
     } else if (choice === 'SILENT_MODE') {
       const silentMode = await p.confirm({
         message: i18n.t('Enable silent mode?'),

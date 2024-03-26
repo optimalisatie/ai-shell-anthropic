@@ -60,7 +60,7 @@ export async function generateCompletion({
   key,
   model,
 }: {
-  prompt: string;
+  prompt: string | { role: string; content: string }[];
   number?: number;
   model?: string;
   key: string;
@@ -70,7 +70,9 @@ export async function generateCompletion({
   try {
     return anthropic.messages.stream({
       model: selectedModel,
-      messages: [{ role: 'user', content: prompt }],
+      messages: Array.isArray(prompt)
+        ? prompt
+        : [{ role: 'user', content: prompt }],
       max_tokens: 2048,
       stream: true,
     });

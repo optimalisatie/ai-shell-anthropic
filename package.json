@@ -1,6 +1,6 @@
 {
   "name": "@optimization/ai-shell-anthropic",
-  "description": "A CLI that converts natural language to shell commands. A port from OpenAI to Anthropic.",
+  "description": "A CLI that converts natural language to shell commands. A port from Anthropic to Anthropic.",
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
