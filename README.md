@@ -180,6 +180,48 @@ Here's a list of the advantages of each Anthropic model for the shell AI tool:
 - Focuses on the essential aspects of the task at hand, without providing extensive explanations or context
 - Best suited for users who prioritize speed and simplicity in their shell AI assistant, and are comfortable with a more concise output style
 
+# Passing File Data to AI Shell
+
+The AI shell tool now supports passing file data, such as text prompts and images, directly to the AI assistant.
+
+## Passing Text Prompts
+
+To pass a text prompt from a file to the AI shell tool, you can use the `cat` command followed by the file name and pipe the output to `ai`. Here's an example:
+
+```bash
+cat big-prompt.txt | ai
+```
+
+In this example, the contents of the file `big-prompt.txt` will be passed as input to the AI shell tool. The AI assistant will process the text prompt and generate a response based on the provided context.
+
+This feature is particularly useful when you have a large or complex prompt that is easier to manage in a separate file. It allows you to keep your prompts organized and easily reusable.
+
+## Passing Images
+The AI shell tool also supports passing image data for analysis and description. To pass an image file to the AI, you can use the `cat` command followed by the image file name and pipe the output to `ai describe this image`. Here's an example:
+
+```bash
+cat image.png | ai describe this image
+```
+
+In this example, the contents of the image file `image.png` will be passed as input to the AI shell tool. The AI assistant will analyze the image and generate a description based on its visual content.
+
+This feature enables you to leverage the AI's image recognition capabilities directly from the command line. You can use it to quickly describe images, extract relevant information, or generate captions for your visual data.
+
+## Advantages of Passing File Data
+Passing file data to the AI shell tool offers several advantages:
+
+1. **Context**: By providing more context through text prompts or images, you can help the AI generate more accurate and relevant commands or responses. The additional information allows the AI to better understand your intent and tailor its output accordingly.
+
+2. **Convenience**: Instead of manually typing long prompts or describing images, you can simply pass the file data directly to the AI shell tool. This saves time and effort, especially when dealing with large or complex inputs.
+
+3. **Reusability**: Storing prompts or image descriptions in separate files makes them easily reusable. You can maintain a library of commonly used prompts or images and quickly pass them to the AI shell tool whenever needed.
+
+4. **Integration**: The ability to pass file data enables seamless integration with other command-line tools and workflows. You can pipe the output of other commands or scripts to the AI shell tool, allowing for powerful automation and data processing capabilities.
+
+To make the most of this feature, ensure that your text prompts are well-structured and provide clear instructions or context for the AI. When passing images, use high-quality and relevant images that accurately represent the content you want the AI to analyze.
+
+By leveraging the power of file data input, you can unlock new possibilities and enhance the capabilities of the AI shell tool, making it an even more versatile and efficient assistant for your command-line needs.
+
 # Customizing System Prompts
 
 Anthropic AI offers a unique feature that allows users to customize the system prompts for the AI shell assistant. By modifying the system prompts, you can fine-tune the AI's behavior and responses to achieve a personalized and efficient shell agent tailored to your specific needs.

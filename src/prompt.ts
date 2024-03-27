@@ -1,16 +1,17 @@
 import * as p from '@clack/prompts';
 import { execaCommand } from 'execa';
-import { cyan, dim } from 'kolorist';
+import { cyan, green, red, dim } from 'kolorist';
 import {
   getExplanation,
   getRevision,
   getScriptAndInfo,
 } from './helpers/completion';
-import { getConfig, readSystemPromptConfigFile } from './helpers/config';
+import { getConfig, getSystemPromptConfig } from './helpers/config';
 import { projectName } from './helpers/constants';
 import { KnownError } from './helpers/error';
 import clipboardy from 'clipboardy';
 import i18n from './helpers/i18n';
+import { fromBuffer } from 'file-type';
 
 const init = async () => {
   try {
@@ -55,6 +56,7 @@ async function getPrompt(prompt?: string) {
           message: i18n.t('What would you like me to do?'),
           placeholder: `${i18n.t('e.g.')} ${sample(examples)}`,
           initialValue: prompt,
+          multiline: true, // Enable multiline mode
           defaultValue: i18n.t('Say hello'),
           validate: (value) => {
             if (!value) return i18n.t('Please enter a prompt.');
@@ -98,6 +100,7 @@ export async function prompt({
   silentMode,
   instantMode,
   safeMode,
+  fileInput,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
     ANTHROPICAI_KEY: key,
@@ -108,42 +111,86 @@ export async function prompt({
     SYSTEM_PROMPT_FILE,
   } = await getConfig();
   const skipCommandExplanation = silentMode || SILENT_MODE;
-  const skipCommandConfirmation = instantMode || INSTANT_MODE;
+  const instantModeEnabled = instantMode || INSTANT_MODE;
   const safeModeEnabled = safeMode || SAFE_MODE;
 
-  let systemPromptConfig;
-  if (SYSTEM_PROMPT_FILE) {
-    systemPromptConfig = await readSystemPromptConfigFile(SYSTEM_PROMPT_FILE);
-  }
+  let systemPromptConfig = await getSystemPromptConfig(SYSTEM_PROMPT_FILE);
 
   console.log('');
-  p.intro(`${cyan(`${projectName}`)}`);
 
-  let thePrompt = usePrompt || (await getPrompt());
+  let modeName = [];
+  if (instantModeEnabled) {
+    modeName.push(`⚠️ ${red(`Instant Mode`)}`);
+  }
+  if (safeModeEnabled) {
+    modeName.push(`🛡️ ${green(`Safe Mode`)}`);
+  }
+  modeName = (modeName.length) ? ' | ' + modeName.join(' | ') : '';
+
+  p.intro(
+    `${cyan(`${projectName}`)}${modeName}`
+  );
+
+  let thePrompt
+  if (fileInput && fileInput.text) {
+    thePrompt = fileInput.data + '\n\n' + ((usePrompt) ? usePrompt : '');
+    fileInput = false;
+  } else {
+    thePrompt = usePrompt || (await getPrompt());
+  }
 
   if (safeModeEnabled) {
-    thePrompt += '\n\nRemember, you are in safe mode and you will not respond with commands that can cause changes to files or the environment of the server.'
+    thePrompt += (systemPromptConfig.safe_mode_enforcer) ? systemPromptConfig.safe_mode_enforcer : '';
   }
 
   const spin = p.spinner();
   spin.start(i18n.t(`Loading...`));
+
   const { readInfo, readScript } = await getScriptAndInfo({
     prompt: thePrompt,
     key,
     model,
     safeModeEnabled,
     systemPromptConfig,
+    fileInput,
   });
 
   const script = await readScript(process.stdout.write.bind(process.stdout));
 
-  if (!skipCommandConfirmation) {
+  let safeModeWarning;
+  if (/safe_mode_prohibited/i.test(script)) {
+    
+    try {
+      safeModeWarning = JSON.parse(script);
+    } catch(err) {
+      safeModeWarning = {
+        explanation: script,
+        unsafe_command: 'null'
+      }
+    };
+    let explanation = safeModeWarning.explanation || '';
+    let unsafe_command = safeModeWarning.unsafe_command || 'null';
+
+    spin.stop(`⚠️ ${red(`${i18n.t('Safe Mode Blocked Script')}`)}`);
+
+    console.log('│');
+    console.log(dim('•'), `${i18n.t('Script')}: ${unsafe_command}`);
+    p.outro(`${explanation}`);
+    process.exit(0);
+
+  } else if (fileInput) {
+
+    console.log('│');
+    p.outro(`${script}`);
+    process.exit(0);
+
+  } else if (!instantModeEnabled) {
     spin.stop(`${i18n.t('Your script')}: ${script}`);
   } else {
     spin.stop(`${i18n.t('Executing script')}: ${script}`);
     console.log('');
   }
-  if (skipCommandConfirmation) {
+  if (instantModeEnabled) {
     try {
       await runScript(script, true);
     } catch (err) { 
@@ -152,9 +199,7 @@ export async function prompt({
     process.exit(1);
   } else {
 
-    
-    console.log('');
-    console.log('');
+    console.log('│');
     console.log(dim('•'));
 
     if (!skipCommandExplanation) {

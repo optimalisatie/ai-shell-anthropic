@@ -14,8 +14,6 @@ const models = {
   haiku: 'claude-3-haiku-20240307',
 };
 
-import systemPrompts from '../system-prompts.ts';
-
 const explainInSecondRequest = true;
 
 // Create an Anthropic client instance with the provided API key
@@ -41,12 +39,19 @@ export async function getScriptAndInfo({
   model,
   safeModeEnabled,
   systemPromptConfig,
+  fileInput,
 }: {
   prompt: string;
   key: string;
   model?: string;
 }) {
-  const fullPrompt = getFullPrompt(prompt);
+  let fullPrompt;
+  if (fileInput) {
+    fullPrompt = getImagePrompt(prompt);
+  } else {
+    fullPrompt = getFullPrompt(prompt);
+  }
+
   const stream = await generateCompletion({
     prompt: fullPrompt,
     number: 1,
@@ -54,6 +59,7 @@ export async function getScriptAndInfo({
     model,
     safeModeEnabled,
     systemPromptConfig,
+    fileInput,
   });
   return {
     readScript: readData(stream, ...shellCodeExclusions),
@@ -70,6 +76,7 @@ export async function generateCompletion({
   chatMode,
   safeModeEnabled,
   systemPromptConfig,
+  fileInput,
 }: {
   prompt: string | { role: string; content: string }[];
   number?: number;
@@ -79,20 +86,38 @@ export async function generateCompletion({
 }) {
   const selectedModel = getAnthropicModel(model);
   const anthropic = getAnthropicClient(key);
-  let systemPrompt;
-  let systemPromptKey = (chatMode) ? 'chat' : ((safeModeEnabled) ? 'shell_safe' : 'shell');
-  if (systemPromptConfig && systemPromptConfig[systemPromptKey]) {
-    systemPrompt = systemPromptConfig[systemPromptKey];
-  } else {
-      systemPrompt = systemPrompts[systemPromptKey];
-  }
+  const systemPrompt = (systemPromptConfig) ? systemPromptConfig[(chatMode) ? 'chat' : ((safeModeEnabled) ? 'shell_safe' : 'shell')] : '';
 
   try {
+
+    let msgs = [];
+
+    if (Array.isArray(prompt)) {
+      msgs = msgs.concat(prompt);
+    } else {
+      msgs.push({ role: 'user', content: prompt });
+    }
+
+    if (fileInput && fileInput.image) {
+      if (!Array.isArray(msgs[msgs.length - 1].content)) {
+        if (typeof msgs[msgs.length - 1].content === 'string') {
+          msgs[msgs.length - 1].content = {
+            "type": "text",
+            "text": msgs[msgs.length - 1].content
+          }
+        }
+        msgs[msgs.length - 1].content = [msgs[msgs.length - 1].content];
+      } 
+      msgs[msgs.length - 1].content.unshift({"type": "image", "source": {
+              "type": "base64",
+              "media_type": fileInput.type.mime,
+              "data": fileInput.data.toString('base64')
+          }});
+    }
+
     return anthropic.messages.stream({
       model: selectedModel,
-      messages: Array.isArray(prompt)
-        ? prompt
-        : [{ role: 'user', content: prompt }],
+      messages: msgs,
       max_tokens: 4096,
       stream: true,
       system: systemPrompt
@@ -179,12 +204,15 @@ export const readData =
       return '';
     }
 
-    process.stdin.setRawMode(true);
-    process.stdin.on('keypress', (key, data) => {
-      if (stopTextStreamKeys.includes(data.name)) {
-        stopTextStream = true;
-      }
-    });
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+
+      process.stdin.on('keypress', (key, data) => {
+        if (stopTextStreamKeys.includes(data.name)) {
+          stopTextStream = true;
+        }
+      });
+    }
 
     for await (const messageStreamEvent of stream) {
       if (messageStreamEvent.type === 'content_block_delta' || messageStreamEvent.type === 'content_block_start') {
@@ -229,7 +257,7 @@ function getExplanationPrompt(script: string) {
 function getShellDetails() {
   const shellDetails = detectShell();
   return dedent`
-      The target shell is ${shellDetails}
+      The shell and OS environment related to the prompt is ${shellDetails}
   `;
 }
 
@@ -257,6 +285,17 @@ function getFullPrompt(prompt: string) {
     ${shellDetails}
     ${generationDetails}
     ${explainInSecondRequest ? '' : explainScript}
+    The prompt is: ${prompt}
+  `;
+}
+
+// Get the full prompt for generating a script
+function getImagePrompt(prompt: string) {
+  return dedent`
+    Attached is an image. Answer the prompt relative to that image.
+    ${shellDetails}
+    ${explainInSecondRequest ? '' : explainScript}
+    Remember, the prompt is about the attached image.
     The prompt is: ${prompt}
   `;
 }

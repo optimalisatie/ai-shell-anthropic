@@ -2,8 +2,20 @@ import { command } from 'cleye';
 import { spinner, intro, outro, text, isCancel } from '@clack/prompts';
 import { cyan, green } from 'kolorist';
 import { generateCompletion, readData } from '../helpers/completion';
-import { getConfig } from '../helpers/config';
+import { getConfig, getSystemPromptConfig } from '../helpers/config';
+import dedent from 'dedent';
+import { detectShell } from '../helpers/os-detect';
 import i18n from '../helpers/i18n';
+
+// Get the details of the target shell
+function getShellDetails() {
+  const shellDetails = detectShell();
+  return dedent`
+      The shell and OS environment related to the chat is ${shellDetails}
+  `;
+}
+
+const shellDetails = getShellDetails();
 
 export default command(
   {
@@ -14,8 +26,10 @@ export default command(
     },
   },
   async () => {
-    const { ANTHROPICAI_KEY: key, MODEL: model } = await getConfig();
+    const { ANTHROPICAI_KEY: key, MODEL: model, SYSTEM_PROMPT_FILE: system_prompt_file } = await getConfig();
     const chatHistory: { role: string; content: string }[] = [];
+    const systemPromptConfig = await getSystemPromptConfig(system_prompt_file);
+    systemPromptConfig.chat = shellDetails + '\n' + shellDetails.chat;
 
     console.log('');
     intro(i18n.t('Starting new conversation'));
@@ -52,7 +66,7 @@ export default command(
       infoSpin.start(i18n.t(`THINKING...`));
 
       const chatMode = true;
-      const stream = await generateCompletion({ prompt, key, model, chatMode });
+      const stream = await generateCompletion({ prompt, key, model, chatMode, systemPromptConfig });
       const readResponse = readData(stream);
 
       infoSpin.stop(`${green('AI Shell:')}`);

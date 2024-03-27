@@ -1,0 +1,3 @@
+calcualte twelve times ten;
+
+when you're done, print the word 'OK';

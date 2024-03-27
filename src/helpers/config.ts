@@ -8,6 +8,7 @@ import { KnownError, handleCliError } from './error';
 import * as p from '@clack/prompts';
 import { red } from 'kolorist';
 import i18n from './i18n';
+import { systemPrompts } from '../system-prompts';
 
 const { hasOwnProperty } = Object.prototype;
 export const hasOwn = (object: unknown, key: PropertyKey) =>
@@ -88,27 +89,53 @@ const readConfigFile = async (): Promise<RawConfig> => {
   return ini.parse(configString);
 };
 
+export const getSystemPromptConfig = async (SYSTEM_PROMPT_FILE) => {
+  let systemPromptConfig = Object.assign({}, systemPrompts);
+
+  // (chatMode) ? 'chat'
+  // customized system prompts
+  if (SYSTEM_PROMPT_FILE) {
+    let customSystemPromptConfig = await readSystemPromptConfigFile(SYSTEM_PROMPT_FILE);
+
+    if (customSystemPromptConfig && typeof customSystemPromptConfig === 'object') {
+      systemPromptConfig = Object.assign(systemPromptConfig, customSystemPromptConfig)
+    }
+  }
+
+  return systemPromptConfig;
+};
+
+let systemPromptConfigCache = new Map();
 export const readSystemPromptConfigFile = async (system_prompt_file): Promise<RawConfig> => {
+  
+  if (systemPromptConfigCache.has(system_prompt_file)) {
+    return systemPromptConfigCache.get(system_prompt_file);
+  }
+
   const configExists = (system_prompt_file) ? await fileExists(system_prompt_file) : false;
   if (!configExists) {
     return Object.create(null);
   }
 
-  let configString;
+  let config;
   try {
     if (/\.js$/.test(system_prompt_file)) {
-      configString = require(path.resolve(system_prompt_file));
+      config = require(path.resolve(system_prompt_file));
     } else {
-      configString = JSON.parse(await fs.readFile(system_prompt_file, 'utf8'));
+      config = JSON.parse(await fs.readFile(system_prompt_file, 'utf8'));
     }
-    if (!configString || typeof configString !== 'object') {
+    if (!config || typeof config !== 'object') {
       throw new KnownError(`${i18n.t('Invalid JSON in system prompt file.')}: ${system_prompt_file}`);  
     }
   } catch(err) {
     throw new KnownError(`${i18n.t('Failed to parse JSON of system prompt file.')}: ${system_prompt_file} ${err}`);
     return false;
   }
-  return configString;
+  
+  // Add the file path to the cache
+  systemPromptConfigCache.set(system_prompt_file, config);
+
+  return config;
 };
 
 export const getConfig = async (
