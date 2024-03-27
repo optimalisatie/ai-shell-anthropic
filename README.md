@@ -12,6 +12,7 @@ A port of OpenAI based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-she
 - The Haiku model is low cost and super fast (see [#models](#custom-anthropic-model))
 - Anthropic AI is reliable and precise in its responses.
 - Opus model available on par with GPT-4 and Gemini.
+- Improved with features such as instant mode, reading prompt files and image analyzation.
 
 <p align="center">
    <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
