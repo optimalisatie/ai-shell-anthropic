@@ -205,22 +205,7 @@ cat image.png | ai describe this image
 
 In this example, the contents of the image file `image.png` will be passed as input to the AI shell tool. The AI assistant will analyze the image and generate a description based on its visual content.
 
-This feature enables you to leverage the AI's image recognition capabilities directly from the command line. You can use it to quickly describe images, extract relevant information, or generate captions for your visual data.
-
-## Advantages of Passing File Data
-Passing file data to the AI shell tool offers several advantages:
-
-1. **Context**: By providing more context through text prompts or images, you can help the AI generate more accurate and relevant commands or responses. The additional information allows the AI to better understand your intent and tailor its output accordingly.
-
-2. **Convenience**: Instead of manually typing long prompts or describing images, you can simply pass the file data directly to the AI shell tool. This saves time and effort, especially when dealing with large or complex inputs.
-
-3. **Reusability**: Storing prompts or image descriptions in separate files makes them easily reusable. You can maintain a library of commonly used prompts or images and quickly pass them to the AI shell tool whenever needed.
-
-4. **Integration**: The ability to pass file data enables seamless integration with other command-line tools and workflows. You can pipe the output of other commands or scripts to the AI shell tool, allowing for powerful automation and data processing capabilities.
-
-To make the most of this feature, ensure that your text prompts are well-structured and provide clear instructions or context for the AI. When passing images, use high-quality and relevant images that accurately represent the content you want the AI to analyze.
-
-By leveraging the power of file data input, you can unlock new possibilities and enhance the capabilities of the AI shell tool, making it an even more versatile and efficient assistant for your command-line needs.
+This feature enables you to leverage Anthropic AI's image recognition capabilities directly from the command line. You can use it to quickly describe images, extract relevant information, or generate captions for your visual data.
 
 # Customizing System Prompts
 
