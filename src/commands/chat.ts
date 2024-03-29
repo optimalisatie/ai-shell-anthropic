@@ -1,9 +1,10 @@
 import { command } from 'cleye';
 import { spinner, intro, outro, text, isCancel } from '@clack/prompts';
-import { cyan, green } from 'kolorist';
+import { cyan, green, blue } from 'kolorist';
 import { generateCompletion, readData } from '../helpers/completion';
 import { getConfig, getSystemPromptConfig } from '../helpers/config';
 import dedent from 'dedent';
+import { projectName } from '../helpers/constants';
 import { detectShell } from '../helpers/os-detect';
 import i18n from '../helpers/i18n';
 
@@ -25,14 +26,22 @@ export default command(
         'Start a new chat session to send and receive messages, continue replying until the user chooses to exit.',
     },
   },
-  async () => {
+  async (argv) => {
     const { ANTHROPICAI_KEY: key, MODEL: model, SYSTEM_PROMPT_FILE: system_prompt_file } = await getConfig();
     const chatHistory: { role: string; content: string }[] = [];
     const systemPromptConfig = await getSystemPromptConfig(system_prompt_file);
+    const initialPrompt = argv._.join(' ');
     systemPromptConfig.chat = shellDetails + '\n' + shellDetails.chat;
 
     console.log('');
-    intro(i18n.t('Starting new conversation'));
+
+    let modeName = [];
+    modeName.push(`💬 ${blue(`Chat Mode`)}`);
+    modeName = (modeName.length) ? ' | ' + modeName.join(' | ') : '';
+
+    intro(
+      `${cyan(`${projectName}`)}${modeName}`
+    );
 
     const promptUser = async () => {
       const msgYou = `${i18n.t('You')}:`;
@@ -83,6 +92,15 @@ export default command(
       await promptUser();
     };
 
-    await promptUser();
+    if (initialPrompt) {
+      const msgYou = `◆ ${i18n.t('You')}:`;
+      console.log('│');
+      console.log(`${cyan(msgYou)}`);
+      console.log('│', initialPrompt);
+      chatHistory.push({ role: 'user', content: initialPrompt });
+      await getResponse({ prompt: chatHistory, key, model });
+    } else {
+      await promptUser();
+    }
   }
 );

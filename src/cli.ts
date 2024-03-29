@@ -10,9 +10,9 @@ import { prompt } from './prompt';
 import { fileTypeFromBuffer } from 'file-type';
 
 // capture file input
-// @example ai describe this image < image.png 
-// @example ai < big-prompt.txt
-// @todo ai analyse this file < some-binary-file.dat
+// @example cat image.png | ai describe this image
+// @example cat big-prompt.txt | ai
+// @todo ai cat some-binary-file.dat | analyse this file
 (async () => {
 
   let fileInput;
