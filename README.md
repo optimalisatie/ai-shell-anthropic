@@ -12,7 +12,7 @@ A port of OpenAI based [@BuilderIO/ai-shell](https://github.com/BuilderIO/ai-she
 - The Haiku model is low cost and super fast (see [#models](#custom-anthropic-model))
 - Anthropic AI is reliable and precise in its responses.
 - Opus model available on par with GPT-4 and Gemini.
-- Improved with features such as instant mode, reading prompt files and image analyzation.
+- Improved with features such as instant mode, reading prompt files and image chat.
 
 <p align="center">
    <a href="https://www.npmjs.com/package/@optimization/ai-shell-anthropic"><img src="https://img.shields.io/npm/v/@optimization/ai-shell-anthropic" alt="Current version"></a>
@@ -90,12 +90,21 @@ Note that some shells handle certain characters like the `?` or `*` or things th
 ai 'what is my ip address'
 ```
 
-### Chat mode
+### Chat Mode
 
 ![Chat demo](https://user-images.githubusercontent.com/844291/232889699-e13fb3fe-1659-4583-80ee-6c58d1bcbd06.gif)
 
 ```bash
 ai chat
+
+ai c "please answer my question" -m "opus"
+
+cat big-prompt.txt | ai c
+
+# chat about an image
+ai c describe this image -f image.png
+
+ai c -f big-prompt.txt
 ```
 
 With this mode, you can engage in a conversation with the AI and receive helpful responses in a natural, conversational manner directly through the CLI:
@@ -103,20 +112,17 @@ With this mode, you can engage in a conversation with the AI and receive helpful
 ```sh
 ┌  Starting new conversation
 │
+◆ 🖼️ Image Input
+│
 ◇  You:
-│  how do I serve a redirect in express
+│  describe this image
 │
 ◇  AI Shell:
-
-In Express, you can use the `redirect()` method to serve a redirect. The `redirect()` method takes one argument, which is the URL that you want to redirect to.
-
-Here's an example:
-
-\`\`\`js
-app.get('/oldurl', (req, res) => {
-  res.redirect('/newurl');
-});
-\`\`\`
+│ ...
+│
+◇  You:
+│  what is its background color?
+│
 ```
 
 ### Silent Mode (Skip Explanations)
@@ -159,6 +165,10 @@ To set the desired model, use the following command:
 
 ```sh
 ai config set MODEL=opus
+
+ai -m sonnet
+
+ai chat -m opus
 ```
 
 Here's a list of the advantages of each Anthropic model for the shell AI tool:
@@ -211,6 +221,14 @@ This feature enables you to leverage Anthropic AI's image recognition capabiliti
 # Customizing System Prompts
 
 Anthropic AI offers a unique feature that allows users to customize the system prompts for the AI shell assistant. By modifying the system prompts, you can fine-tune the AI's behavior and responses to achieve a personalized and efficient shell agent tailored to your specific needs.
+
+You can set a custom system prompt using the following command.
+
+```bash
+ai -X path/to/system-prompt.txt
+
+ai --system path/to/system-prompt.txt
+```
 
 The default system prompts are located in the repository directory [./src/system-prompts.ts](./src/system-prompts.ts). This file contains three system prompts:
 

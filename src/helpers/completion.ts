@@ -40,6 +40,7 @@ export async function getScriptAndInfo({
   safeModeEnabled,
   systemPromptConfig,
   fileInput,
+  customSystemPrompt,
 }: {
   prompt: string;
   key: string;
@@ -48,6 +49,8 @@ export async function getScriptAndInfo({
   let fullPrompt;
   if (fileInput) {
     fullPrompt = getImagePrompt(prompt);
+  } else if (customSystemPrompt) {
+    fullPrompt = prompt;
   } else {
     fullPrompt = getFullPrompt(prompt);
   }
@@ -86,7 +89,12 @@ export async function generateCompletion({
 }) {
   const selectedModel = getAnthropicModel(model);
   const anthropic = getAnthropicClient(key);
-  const systemPrompt = (systemPromptConfig) ? systemPromptConfig[(chatMode) ? 'chat' : ((safeModeEnabled) ? 'shell_safe' : 'shell')] : '';
+  let systemPrompt;
+  if (systemPromptConfig && systemPromptConfig.custom) {
+    systemPrompt = systemPromptConfig.custom;
+  } else {
+    systemPrompt = (systemPromptConfig) ? systemPromptConfig[(chatMode) ? 'chat' : ((safeModeEnabled) ? 'shell_safe' : 'shell')] : '';
+  }
 
   try {
 
@@ -97,6 +105,14 @@ export async function generateCompletion({
     } else {
       msgs.push({ role: 'user', content: prompt });
     }
+
+    msgs.forEach(function(msg, index) {
+      if (msg.image) {
+        fileInput = msg.image;
+        delete msgs[index];
+      }
+    });
+    msgs = msgs.filter(function(el) { return !!el;});
 
     if (fileInput && fileInput.image) {
       if (!Array.isArray(msgs[msgs.length - 1].content)) {
@@ -109,10 +125,10 @@ export async function generateCompletion({
         msgs[msgs.length - 1].content = [msgs[msgs.length - 1].content];
       } 
       msgs[msgs.length - 1].content.unshift({"type": "image", "source": {
-              "type": "base64",
-              "media_type": fileInput.type.mime,
-              "data": fileInput.data.toString('base64')
-          }});
+          "type": "base64",
+          "media_type": fileInput.type.mime,
+          "data": fileInput.data.toString('base64')
+      }});
     }
 
     return anthropic.messages.stream({

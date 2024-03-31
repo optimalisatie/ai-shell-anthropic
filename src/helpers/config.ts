@@ -89,7 +89,7 @@ const readConfigFile = async (): Promise<RawConfig> => {
   return ini.parse(configString);
 };
 
-export const getSystemPromptConfig = async (SYSTEM_PROMPT_FILE) => {
+export const getSystemPromptConfig = async (SYSTEM_PROMPT_FILE, customSystemPrompt) => {
   let systemPromptConfig = Object.assign({}, systemPrompts);
 
   // (chatMode) ? 'chat'
@@ -99,6 +99,15 @@ export const getSystemPromptConfig = async (SYSTEM_PROMPT_FILE) => {
 
     if (customSystemPromptConfig && typeof customSystemPromptConfig === 'object') {
       systemPromptConfig = Object.assign(systemPromptConfig, customSystemPromptConfig)
+    }
+  }
+
+  if (customSystemPrompt) {
+    const isFile = await fileExists(customSystemPrompt);
+    if (isFile) {
+      systemPromptConfig.custom = await fs.readFile(customSystemPrompt, 'utf8');
+    } else {
+      systemPromptConfig.custom = customSystemPrompt;
     }
   }
 

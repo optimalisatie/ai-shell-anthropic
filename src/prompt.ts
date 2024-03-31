@@ -1,6 +1,6 @@
 import * as p from '@clack/prompts';
 import { execaCommand } from 'execa';
-import { cyan, green, red, dim } from 'kolorist';
+import { cyan, green, red, blue, dim } from 'kolorist';
 import {
   getExplanation,
   getRevision,
@@ -101,6 +101,8 @@ export async function prompt({
   instantMode,
   safeMode,
   fileInput,
+  systemPrompt,
+  selectedModel,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
     ANTHROPICAI_KEY: key,
@@ -113,17 +115,23 @@ export async function prompt({
   const skipCommandExplanation = silentMode || SILENT_MODE;
   const instantModeEnabled = instantMode || INSTANT_MODE;
   const safeModeEnabled = safeMode || SAFE_MODE;
+  const modelSelected = selectedModel || model;
+  const customSystemPrompt = !!systemPrompt;
 
-  let systemPromptConfig = await getSystemPromptConfig(SYSTEM_PROMPT_FILE);
+  let systemPromptConfig = await getSystemPromptConfig(SYSTEM_PROMPT_FILE, systemPrompt);
 
   console.log('');
 
   let modeName = [];
+  modeName.push(`👾 ${green(`Model:`)} ${modelSelected}`);
   if (instantModeEnabled) {
     modeName.push(`⚠️ ${red(`Instant Mode`)}`);
   }
   if (safeModeEnabled) {
     modeName.push(`🛡️ ${green(`Safe Mode`)}`);
+  }
+  if (systemPrompt) {
+    modeName.push(`⚙️ ${blue(`Custom System`)}`);
   }
   modeName = (modeName.length) ? ' | ' + modeName.join(' | ') : '';
 
@@ -131,7 +139,7 @@ export async function prompt({
     `${cyan(`${projectName}`)}${modeName}`
   );
 
-  let thePrompt
+  let thePrompt;
   if (fileInput && fileInput.text) {
     thePrompt = fileInput.data + '\n\n' + ((usePrompt) ? usePrompt : '');
     fileInput = false;
@@ -149,10 +157,11 @@ export async function prompt({
   const { readInfo, readScript } = await getScriptAndInfo({
     prompt: thePrompt,
     key,
-    model,
+    model: modelSelected,
     safeModeEnabled,
     systemPromptConfig,
     fileInput,
+    customSystemPrompt,
   });
 
   const script = await readScript(process.stdout.write.bind(process.stdout));
@@ -185,7 +194,11 @@ export async function prompt({
     process.exit(0);
 
   } else if (!instantModeEnabled) {
-    spin.stop(`${i18n.t('Your script')}: ${script}`);
+    if (customSystemPrompt) {
+      spin.stop(`${i18n.t('Response')}: ${script}`);
+    } else {
+      spin.stop(`${i18n.t('Your script')}: ${script}`);
+    }
   } else {
     spin.stop(`${i18n.t('Executing script')}: ${script}`);
     console.log('');
